@@ -5,6 +5,8 @@ This project creates a tiny Windows Console executable that can be shipped with 
 
 The idea is that you can build a custom version of this executable and ship it with your application, and fire it from your installer or install script to install the required minimum runtime if not already present. The tool checks for the minimum version, and if not present downloads and installs it.
 
+> You can also customize this project to act as a launcher that checks for the Runtime and installs it if not present and then forwards the command line to your main .NET Core executable. But this is not built into this project.
+
 The executable does the following:
 
 * Checks for a minimum .NET Desktop Runtime Version
