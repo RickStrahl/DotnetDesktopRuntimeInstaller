@@ -49,7 +49,10 @@ namespace DotnetDesktopRuntimeInstaller
     {
         static void Main(string[] args)
         {
-            DesktopRuntimeInstaller.CheckAndInstallRuntime(Environment.CommandLine.Contains("-silent"));
+            if (!DesktopRuntimeInstaller.CheckAndInstallRuntime(Environment.CommandLine.Contains("-silent")))
+            {
+                Environment.Exit(1);
+            }
         }
     }
 }

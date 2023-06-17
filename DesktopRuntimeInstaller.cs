@@ -43,6 +43,7 @@ namespace DotnetDesktopRuntimeInstaller
                 return true;
             }
 
+            bool result = false;
             var text =
                 $"{RuntimeConfiguration.ApplicationName} requires the .NET Desktop Runtime v{RuntimeConfiguration.MinDotnetRuntimeVersion} or later.";
             var line = new string('-', text.Length);
@@ -50,7 +51,7 @@ namespace DotnetDesktopRuntimeInstaller
 
             if (isSilent)
             {
-                DownloadAndInstall(true);
+                result = DownloadAndInstall(true);
             }
             else
             {
@@ -61,18 +62,18 @@ namespace DotnetDesktopRuntimeInstaller
 
                 if (key.Key == ConsoleKey.Y || key.Key == ConsoleKey.Enter)
                 {
-                    DownloadAndInstall();
+                    result = DownloadAndInstall();
                 }
             }
 
-            return true;
+            return result;
         }
 
         private static bool DownloadAndInstall(bool isSilent = false)
         {
             var url = RuntimeConfiguration.DesktopRuntimeDownloadUrl;
             var filename = Path.GetFileName(url);
-            
+
             string pattern = @"(\d+\.\d+\.\d+)";
 
             var dlFolder =
@@ -103,7 +104,7 @@ to:
 
             ConsoleWrite("Download complete.", ConsoleColor.DarkYellow);
 
-            if (!string.IsNullOrEmpty(RuntimeConfiguration.DownloadExeSha512) && 
+            if (!string.IsNullOrEmpty(RuntimeConfiguration.DownloadExeSha512) &&
                 !CheckFileSha512(dlPath, RuntimeConfiguration.DownloadExeSha512))
             {
                 ConsoleWrite($"File Integrity check based on SHA512 Hash failed.\nexpected: {RuntimeConfiguration.DownloadExeSha512}\n  actual: {ComputedFileHash}", ConsoleColor.Red);
