@@ -1,7 +1,9 @@
 Dotnet Desktop Runtime Downloader and Installer
 -----------------------------------------------
 
-This project creates a tiny Windows executable that can be shipped with a .NET Core application to ensure a minimum version of the Desktop Runtime is installed. The idea is that you can build a custom version of this executable and ship it with your application, and fire it from your installer or install script to install the required minimum runtime if not already present. You can also run the installer interactively from the command line for portable installations for example.
+This project creates a tiny Windows Console executable that can be shipped with a .NET Core application **to ensure that a minimum version of the Desktop Runtime is installed**. 
+
+The idea is that you can build a custom version of this executable and ship it with your application, and fire it from your installer or install script to install the required minimum runtime if not already present. The tool checks for the minimum version, and if not present downloads and installs it.
 
 The executable does the following:
 
@@ -10,7 +12,9 @@ The executable does the following:
 * If not installed prompts to download the latest runtime (latest patch)
 * Prompts to install the downloaded runtime running as Admin
 * Optionally can run without prompts using the `-silent` commandline switch
-* Runs on .NET 4.72 so it has no installable dependencies (single EXE)
+* Runs on .NET 4.72 so it has no dependencies on Windows (single EXE)
+
+Here's what it looks like in interactive mode:
 
 ![Dotnet Desktop Runtime Installer](ScreenShot.png)
 
