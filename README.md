@@ -18,7 +18,7 @@ The executable does the following:
 
 Here's what it looks like in interactive mode:
 
-![Dotnet Desktop Runtime Installer](ScreenShot.png)
+![](ScreenShot.png)
 
 ## Silent Mode
 The figure above shows the installer running in **interactive mode**, which prompts for download, and installation explicitly and shows the .NET Runtime installer interactively.
