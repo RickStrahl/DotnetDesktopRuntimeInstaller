@@ -1,4 +1,4 @@
-Dotnet Desktop Runtime Downloader and Installer
+Dotnet Desktop Runtime Checker and Installer
 -----------------------------------------------
 
 This project creates a tiny Windows Console executable that can be shipped with a .NET Core application **to ensure that a minimum version of the Desktop Runtime is installed**. 
