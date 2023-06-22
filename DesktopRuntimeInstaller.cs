@@ -11,6 +11,59 @@ using Westwind.Utilities;
 namespace DotnetDesktopRuntimeInstaller
 {
     /// <summary>
+    /// Configure the runtime version and download URL here
+    /// for the version you want to check for and install.
+    ///
+    /// Note these two don't have to be the same. You can check for
+    /// a lower version but always install the latest patch version.
+    /// </summary>
+    internal class RuntimeConfiguration
+    {
+        /// <summary>
+        /// Name of the Application used in prompts
+        /// </summary>
+        internal static string ApplicationName = "Markdown Monster";
+
+        /// <summary>
+        /// Minimum version of the Desktop Runtime that's supported.
+        ///
+        /// Launcher checks for installed version and if lower prompts
+        /// to install it.
+        /// </summary>
+        internal static string MinDotnetRuntimeVersion { get; } = "7.0.3";
+
+        /// <summary>
+        /// Direct download URL for the .NET Desktop Runtime Installer.
+        /// 
+        /// Recommend you update this link to the latest available patch version so if you need to install
+        /// you are installing the latest, not an older version.
+        /// MM allows patch roll forward meaning later patches work but you don't install if a
+        /// a compatible version is already installed.
+        /// 
+        /// Get this URL from the Microsoft .NET download site:
+        /// https://dotnet.microsoft.com/en-us/download/dotnet/7.0 (Download x64 Desktop Runtime)
+        /// </summary>
+        internal static string DesktopRuntimeDownloadUrl { get; } =
+            "https://download.visualstudio.microsoft.com/download/pr/342ba160-3776-4ffa-91dd-e3cd9dc0f817/ba649d6b80b27ca164d80bd488cdb51f/windowsdesktop-runtime-7.0.7-win-x64.exe";
+
+        /// <summary>
+        /// Optional SHA512 hash of the downloaded file to verify the file integrity.
+        ///
+        /// Checked only if the value is set.
+        ///
+        /// This value is also displayed on the Microsoft download page along with the download link
+        /// </summary>
+        internal static string DownloadExeSha512 { get; } = "d59e8716324bd8973a95a9fd42a58ad0b176f4b37e8b8ba732be0e13d6f7ffdea79a52aa98363ec86860d551e124bdfaf71ac979b8f41f398e668fd12aa8483e";
+
+        /// <summary>
+        /// Url to the latest Desktop Runtime Download Page.
+        /// </summary>
+        internal static string ManualDownloadPage { get; } = "https://dotnet.microsoft.com/download/dotnet/7.0/runtime?cid=getdotnetcore&runtime=desktop&os=windows&arch=x64";
+    }
+
+
+
+    /// <summary>
     /// Console based downloader that downloads and installs the .NET Desktop Runtime
     /// if it is not already installed.
     ///
@@ -55,11 +108,16 @@ namespace DotnetDesktopRuntimeInstaller
             }
             else
             {
-                ConsoleWrite("Would you like to open to download and install the runtime now? [Y]/[n] ",
+                ConsoleWrite("Would you like to open to download and install the runtime now? [Y]/[n] ([m]anually download and install)",
                     ConsoleColor.Yellow);
                 var key = Console.ReadKey();
                 Console.WriteLine();
 
+                if (key.Key == ConsoleKey.M)
+                {
+                    ShellUtils.GoUrl(RuntimeConfiguration.ManualDownloadPage);
+                    return true;
+                }
                 if (key.Key == ConsoleKey.Y || key.Key == ConsoleKey.Enter)
                 {
                     result = DownloadAndInstall();
@@ -215,4 +273,5 @@ to:
             }
         }
     }
+
 }
