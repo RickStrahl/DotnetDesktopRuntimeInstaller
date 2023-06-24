@@ -118,9 +118,11 @@ internal class RuntimeConfiguration
 }
 ```
 
-I'd recommend that you check for the **lowest valid runtime version** that your application can run with, but **always download and install the latest patch version** specified in the download Url.
+I'd recommended that you check for the **lowest viable runtime version** that your application can run with, but **always download and install the latest patch version** specified in the download Url. So for example, my application works with 7.0.3, but I install the latest which is 7.0.7. 
 
-You can find the latest 7.0 version download URL at this dynamic link
+This is preferable over checking for the latest version, as a valid runtime may already be installed rather than downloading the very latest. This helps reduce piling up every singe runtime installations on the user's machine as well. Windows 11 has also started to update .NET Core to newer patch versions, if they are already installed.
+
+You can find the latest 7.0 version download URL at this dynamic link:
 
 [Latest .NET 7.0 Desktop Runtime Download](https://dotnet.microsoft.com/download/dotnet/7.0/runtime?cid=getdotnetcore&runtime=desktop&os=windows&arch=x64)
 
