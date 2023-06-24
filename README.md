@@ -118,6 +118,18 @@ internal class RuntimeConfiguration
 }
 ```
 
+I'd recommend that you check for the **lowest valid runtime version** that your application can run with, but **always download and install the latest patch version** specified in the download Url.
+
+You can find the latest 7.0 version download URL at this dynamic link
+
+[Latest .NET 7.0 Desktop Runtime Download](https://dotnet.microsoft.com/download/dotnet/7.0/runtime?cid=getdotnetcore&runtime=desktop&os=windows&arch=x64)
+
+On this page you find:
+
+* A direct download link
+* The SHA512 hash
+
+
 ## Resources
 
 
