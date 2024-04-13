@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetDesktopRuntimeInstaller", "DotnetDesktopRuntimeInstaller.csproj", "{C356183F-20C1-4964-9571-ED02D9DCA058}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetRuntimeInstaller", "DotnetRuntimeInstaller.csproj", "{C356183F-20C1-4964-9571-ED02D9DCA058}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

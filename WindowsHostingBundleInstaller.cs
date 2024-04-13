@@ -9,6 +9,7 @@ using Westwind.Utilities;
 
 namespace DotnetRuntimeInstaller
 {
+
     /// <summary>
     /// Configure the runtime version and download URL here
     /// for the version you want to check for and install.
@@ -16,15 +17,15 @@ namespace DotnetRuntimeInstaller
     /// Note these two don't have to be the same. You can check for
     /// a lower version but always install the latest patch version.
     /// </summary>
-    internal class DesktopRuntimeConfiguration
+    internal class WindowsHostingBundleConfiguration
     {
         /// <summary>
         /// Name of the Application used in prompts
         /// </summary>
-        internal static string ApplicationName = "Markdown Monster";
+        internal static string ApplicationName = "West Wind Web Connection";
 
         /// <summary>
-        /// Minimum version of the Desktop Runtime that's supported.
+        /// Minimum version of the Windows Hosting Bundle that should be present.
         ///
         /// Launcher checks for installed version and if lower prompts
         /// to install it.
@@ -32,7 +33,7 @@ namespace DotnetRuntimeInstaller
         internal static string MinDotnetRuntimeVersion { get; } = "8.0.0";
 
         /// <summary>
-        /// Direct download URL for the .NET Desktop Runtime Installer.
+        /// Direct download URL for the .NET Hosting Bundle Runtime Installer.
         /// 
         /// Recommend you update this link to the latest available patch version so if you need to install
         /// you are installing the latest, not an older version.
@@ -43,7 +44,7 @@ namespace DotnetRuntimeInstaller
         /// https://dotnet.microsoft.com/en-us/download/dotnet/8.0 (Download x64 Desktop Runtime)
         /// </summary>
         internal static string RuntimeDownloadUrl { get; } =
-            "https://download.visualstudio.microsoft.com/download/pr/c1d08a81-6e65-4065-b606-ed1127a954d3/14fe55b8a73ebba2b05432b162ab3aa8/windowsdesktop-runtime-8.0.4-win-x64.exe";
+            "https://download.visualstudio.microsoft.com/download/pr/00397fee-1bd9-44ef-899b-4504b26e6e96/ab9c73409659f3238d33faee304a8b7c/dotnet-hosting-8.0.4-win.exe";
 
         /// <summary>
         /// Optional SHA512 hash of the downloaded file to verify the file integrity.
@@ -52,18 +53,21 @@ namespace DotnetRuntimeInstaller
         ///
         /// This value is also displayed on the Microsoft download page along with the download link
         /// </summary>
-        internal static string DownloadExeSha512 { get; } = "8a0b1ab3a774c33f46cd042783cf785c33f2d9e0bdeee4ff8bf96cfa90a2101a5711231840ef93eab101409e7f3f3770d86e1a55bd52709af08d1a6c908cc194";
+        internal static string DownloadExeSha512 { get; } = "2ae357f0d8e43c316874455ca56adee4d88081bf828721038527760d860beb3b510eca748aa18ebfc9509cd289b51e84156da388853d644cff308b539b04355c";
 
         /// <summary>
-        /// Url to the latest Desktop Runtime Download Page.
+        /// Url to the latest ASP.NET Hosting Bundle Download Page.
         /// </summary>
-        internal static string ManualDownloadPage { get; } = "https://dotnet.microsoft.com/download/dotnet/8.0/runtime?cid=getdotnetcore&runtime=desktop&os=windows&arch=x64";
+        internal static string ManualDownloadPage { get; } = "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-8.0.4-windows-hosting-bundle-installer";
+        
     }
+
+}
 
 
 
     /// <summary>
-    /// Console based downloader that downloads and installs the .NET Desktop Runtime
+    /// Console based downloader that downloads and installs the ASP.NET Windows Hosting Bundle Runtime
     /// if it is not already installed.
     ///
     /// * Checks if the Minimum Runtime version is installed by  checking RT install folder
@@ -74,7 +78,7 @@ namespace DotnetRuntimeInstaller
     /// * Optionally can run silently (-silent) w/o prompting
     ///
     /// </summary>
-    internal class DesktopRuntimeInstaller
+    internal class WindowsHostingBundleInstaller
     {
 
         /// <summary>
@@ -90,14 +94,14 @@ namespace DotnetRuntimeInstaller
             if (RuntimeVersionCheck())
             {
                 ConsoleWrite(
-                    $".NET Desktop Runtime v{DesktopRuntimeConfiguration.MinDotnetRuntimeVersion} or later is already installed.",
+                    $".NET Windows Hosting Bundle v{WindowsHostingBundleConfiguration.MinDotnetRuntimeVersion} or later is already installed.",
                     ConsoleColor.Green);
                 return true;
             }
 
             bool result = false;
             var text =
-                $"{DesktopRuntimeConfiguration.ApplicationName} requires the .NET Desktop Runtime v{DesktopRuntimeConfiguration.MinDotnetRuntimeVersion} or later.";
+                $"{WindowsHostingBundleConfiguration.ApplicationName} requires the .NET Windows Hosting Bundle v{WindowsHostingBundleConfiguration.MinDotnetRuntimeVersion} or later.";
             var line = new string('-', text.Length);
             ConsoleWrite($"{line}\n{text}\n{line}\n", ConsoleColor.Red);
 
@@ -114,7 +118,7 @@ namespace DotnetRuntimeInstaller
 
                 if (key.Key == ConsoleKey.M)
                 {
-                    ShellUtils.GoUrl(DesktopRuntimeConfiguration.ManualDownloadPage);
+                    ShellUtils.GoUrl(WindowsHostingBundleConfiguration.ManualDownloadPage);
                     return true;
                 }
                 if (key.Key == ConsoleKey.Y || key.Key == ConsoleKey.Enter)
@@ -128,7 +132,7 @@ namespace DotnetRuntimeInstaller
 
         private static bool DownloadAndInstall(bool isSilent = false)
         {
-            var url = DesktopRuntimeConfiguration.RuntimeDownloadUrl;
+            var url = WindowsHostingBundleConfiguration.RuntimeDownloadUrl;
             var filename = Path.GetFileName(url);
 
             string pattern = @"(\d+\.\d+\.\d+)";
@@ -161,10 +165,10 @@ to:
 
             ConsoleWrite("Download complete.", ConsoleColor.DarkYellow);
 
-            if (!string.IsNullOrEmpty(DesktopRuntimeConfiguration.DownloadExeSha512) &&
-                !CheckFileSha512(dlPath, DesktopRuntimeConfiguration.DownloadExeSha512))
+            if (!string.IsNullOrEmpty(WindowsHostingBundleConfiguration.DownloadExeSha512) &&
+                !CheckFileSha512(dlPath, WindowsHostingBundleConfiguration.DownloadExeSha512))
             {
-                ConsoleWrite($"File Integrity check based on SHA512 Hash failed.\nexpected: {DesktopRuntimeConfiguration.DownloadExeSha512}\n  actual: {ComputedFileHash}", ConsoleColor.Red);
+                ConsoleWrite($"File Integrity check based on SHA512 Hash failed.\nexpected: {WindowsHostingBundleConfiguration.DownloadExeSha512}\n  actual: {ComputedFileHash}", ConsoleColor.Red);
                 return false;
             }
             ConsoleWrite("File integrity SHA512 hash matches.", ConsoleColor.DarkYellow);
@@ -184,7 +188,7 @@ to:
             }
 
 
-            string dlVersion = DesktopRuntimeConfiguration.MinDotnetRuntimeVersion;
+            string dlVersion = WindowsHostingBundleConfiguration.MinDotnetRuntimeVersion;
             Match match = Regex.Match(filename, pattern);
             if (match.Success)
             {
@@ -227,7 +231,7 @@ to:
         {
             var desktopRuntimePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
-                @"dotnet\shared\Microsoft.WindowsDesktop.App"
+                @"dotnet\shared\Microsoft.AspNetCore.App"
             );
 
             if (!Directory.Exists(desktopRuntimePath))
@@ -241,8 +245,8 @@ to:
                     try
                     {
                         var dirName = Path.GetFileName(d);
-                        var res = dirName.StartsWith(DesktopRuntimeConfiguration.MinDotnetRuntimeVersion.Substring(0, 2)) &&
-                                  new Version(dirName) >= new Version(DesktopRuntimeConfiguration.MinDotnetRuntimeVersion);
+                        var res = dirName.StartsWith(WindowsHostingBundleConfiguration.MinDotnetRuntimeVersion.Substring(0, 2)) &&
+                                  new Version(dirName) >= new Version(WindowsHostingBundleConfiguration.MinDotnetRuntimeVersion);
                         return res;
                     }
                     catch

@@ -1,20 +1,19 @@
-Dotnet Desktop Runtime Checker and Installer
------------------------------------------------
+# Dotnet 8.0 Desktop and Windows Hosting Runtime Checker and Installer
 
-This project creates a tiny Windows Console executable that can be shipped with a .NET Core application **to ensure that a minimum version of the Desktop Runtime is installed**. 
+This project creates a tiny Windows Console executable that can be shipped with a .NET Core application **to ensure that a minimum version of the Desktop or Windows Hosting Bundle Runtime is installed**. 
 
-The idea is that you can build a custom version of this executable and ship it with your application, and fire it from your installer or install script to install the required minimum runtime if not already present. The tool checks for the minimum version, and if not present downloads and installs it.
+The idea is that you can build a custom version of this CLI executable and ship it with your application, and fire it from your installer or install script to install the required minimum runtime if not already present. The tool checks for the minimum version, and if not present downloads and installs it.
 
 > You can also customize this project to act as a launcher that checks for the Runtime and installs it if not present and then forwards the command line to your main .NET Core executable. But this is not built into this project.
 
 The executable does the following:
 
-* Checks for a minimum .NET Desktop Runtime Version
-* If installed does nothing and exits
+* Checks for a minimum .NET Desktop Runtime Version or Windows Hosting Bundle (v8.0 currently)
+* If already installed does nothing and exits
 * If not installed prompts to download the latest runtime (latest patch)
 * Prompts to install the downloaded runtime running as Admin
-* Optionally can run without prompts using the `-silent` commandline switch
-* Runs on .NET 4.72 so it has no dependencies on Windows (single EXE)
+* Optionally can run silently using the `-silent` commandline switch
+* Runs on .NET 4.72 so executable is a single file that is 100% self contained
 
 Here's what it looks like in interactive mode:
 
@@ -32,7 +31,7 @@ If you'd rather run the installer silently, for example when you are calling it 
 This removes all prompts from the Console app and runs the .NET Runtime installer silently.
 
 ## It's a Sample Project - You need to Customize it!
-This project is meant as a sample template project that you can customize and rename or copy into your own solutions for distribution. 
+This project is meant as a sample template project that you can customize and rename or copy into your own solutions for distribution. It works as is in a pinch but you likely want to customize the prompts and potentially the versions used in the configuration. We'll try to keep up with new releases and update to the latest runtimes, but no guarantees.
 
 You can and probably should rename the executable to an application specific launcher name or integrate it into an existing launcher. For example, I have this code integrated into a `mm.exe` which is the Markdown Monster alternate launcher that otherwise forwards commands to the main executable, but performs several support tasks and added a `-runtimeinstall` command line switch to execute the code in `program.cs`.
 
