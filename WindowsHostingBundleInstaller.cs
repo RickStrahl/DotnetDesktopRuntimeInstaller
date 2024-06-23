@@ -44,7 +44,7 @@ namespace DotnetRuntimeInstaller
         /// https://dotnet.microsoft.com/en-us/download/dotnet/8.0 (Download x64 Desktop Runtime)
         /// </summary>
         internal static string RuntimeDownloadUrl { get; } =
-            "https://download.visualstudio.microsoft.com/download/pr/00397fee-1bd9-44ef-899b-4504b26e6e96/ab9c73409659f3238d33faee304a8b7c/dotnet-hosting-8.0.4-win.exe";
+            "https://download.visualstudio.microsoft.com/download/pr/751d3fcd-72db-4da2-b8d0-709c19442225/33cc492bde704bfd6d70a2b9109005a0/dotnet-hosting-8.0.6-win.exe";
 
         /// <summary>
         /// Optional SHA512 hash of the downloaded file to verify the file integrity.
@@ -53,17 +53,14 @@ namespace DotnetRuntimeInstaller
         ///
         /// This value is also displayed on the Microsoft download page along with the download link
         /// </summary>
-        internal static string DownloadExeSha512 { get; } = "2ae357f0d8e43c316874455ca56adee4d88081bf828721038527760d860beb3b510eca748aa18ebfc9509cd289b51e84156da388853d644cff308b539b04355c";
+        internal static string DownloadExeSha512 { get; } = "01c4d06e0bb10e69581b67fba6618f003fdbdd6043bab4c58c47b7f8ac25e52ab7bd3e39404f733821fe6083e2462dbca20b2ff948a7abe8fbb4fd2f26956584";
 
         /// <summary>
         /// Url to the latest ASP.NET Hosting Bundle Download Page.
         /// </summary>
-        internal static string ManualDownloadPage { get; } = "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-8.0.4-windows-hosting-bundle-installer";
+        internal static string ManualDownloadPage { get; } = "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-8.0.6-windows-hosting-bundle-installer";
         
     }
-
-}
-
 
 
     /// <summary>

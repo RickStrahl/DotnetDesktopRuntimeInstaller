@@ -43,7 +43,7 @@ namespace DotnetRuntimeInstaller
         /// https://dotnet.microsoft.com/en-us/download/dotnet/8.0 (Download x64 Desktop Runtime)
         /// </summary>
         internal static string RuntimeDownloadUrl { get; } =
-            "https://download.visualstudio.microsoft.com/download/pr/c1d08a81-6e65-4065-b606-ed1127a954d3/14fe55b8a73ebba2b05432b162ab3aa8/windowsdesktop-runtime-8.0.4-win-x64.exe";
+            "https://download.visualstudio.microsoft.com/download/pr/76e5dbb2-6ae3-4629-9a84-527f8feb709c/09002599b32d5d01dc3aa5dcdffcc984/windowsdesktop-runtime-8.0.6-win-x64.exe";
 
         /// <summary>
         /// Optional SHA512 hash of the downloaded file to verify the file integrity.
@@ -52,7 +52,7 @@ namespace DotnetRuntimeInstaller
         ///
         /// This value is also displayed on the Microsoft download page along with the download link
         /// </summary>
-        internal static string DownloadExeSha512 { get; } = "8a0b1ab3a774c33f46cd042783cf785c33f2d9e0bdeee4ff8bf96cfa90a2101a5711231840ef93eab101409e7f3f3770d86e1a55bd52709af08d1a6c908cc194";
+        internal static string DownloadExeSha512 { get; } = "91bec94f32609fd194ac47a893cea1466e6ad25a16bbaf39cd6989fa9f09e865ba87669aabfe26cd3c8f2a57296170cc021dc762e238a6c5cb5e843d3df3169f";
 
         /// <summary>
         /// Url to the latest Desktop Runtime Download Page.
