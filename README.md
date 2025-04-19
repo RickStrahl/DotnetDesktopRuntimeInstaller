@@ -139,4 +139,4 @@ This is a less likely use case as server installations to deployed applications 
 ## Resources
 
 
-* [Related Blog Post](https://weblog.west-wind.com/posts/2023/Jun/21/Creating-a-Runtime-Checker-and-Installer-for-a-NET-Core-WPF-Application)
+* [Related Blog Post](https://weblog.west-wind.com/posts/2023/Jun/21/Getting-the-NET-Desktop-Runtime-Installed-with-a-Custom-Runtime-Checker-and-Installer)
