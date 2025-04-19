@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
@@ -18,9 +20,6 @@ namespace DotnetRuntimeInstaller
     /// </summary>
     internal class DesktopRuntimeConfiguration
     {
-        /// <summary>
-        /// Name of the Application used in prompts
-        /// </summary>
         internal static string ApplicationName = "Markdown Monster";
 
         /// <summary>
@@ -29,7 +28,14 @@ namespace DotnetRuntimeInstaller
         /// Launcher checks for installed version and if lower prompts
         /// to install it.
         /// </summary>
-        internal static string MinDotnetRuntimeVersion { get; } = "8.0.0";
+        internal static string MinDotnetRuntimeVersion { get; } = "9.0.0";
+
+        /// <summary>
+        /// Determines on whether preview versions are allowed to be used
+        /// as pre-installed versions. If false preview releases are not
+        /// allowed and a release version must be installed or downloaded.
+        /// </summary>
+        internal static bool AllowPreviewVersions { get; } = false;
 
         /// <summary>
         /// Direct download URL for the .NET Desktop Runtime Installer.
@@ -37,13 +43,17 @@ namespace DotnetRuntimeInstaller
         /// Recommend you update this link to the latest available patch version so if you need to install
         /// you are installing the latest, not an older version.
         /// MM allows patch roll forward meaning later patches work but you don't install if a
-        /// a compatible version is already installed.
+        /// compatible version is already installed.
         /// 
         /// Get this URL from the Microsoft .NET download site:
-        /// https://dotnet.microsoft.com/en-us/download/dotnet/8.0 (Download x64 Desktop Runtime)
+        /// https://dotnet.microsoft.com/en-us/download/dotnet/9.0 (Download x64 or Arm64 Desktop Runtime)
         /// </summary>
-        internal static string RuntimeDownloadUrl { get; } =
-            "https://download.visualstudio.microsoft.com/download/pr/76e5dbb2-6ae3-4629-9a84-527f8feb709c/09002599b32d5d01dc3aa5dcdffcc984/windowsdesktop-runtime-8.0.6-win-x64.exe";
+        internal static string DesktopRuntimeDownloadUrlX64 { get; } =
+          "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/9.0.4/windowsdesktop-runtime-9.0.4-win-x64.exe";
+
+
+        internal static string DesktopRuntimeDownloadUrlArm64 { get; } =
+            "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/9.0.4/windowsdesktop-runtime-9.0.4-win-arm64.exe";
 
         /// <summary>
         /// Optional SHA512 hash of the downloaded file to verify the file integrity.
@@ -52,12 +62,14 @@ namespace DotnetRuntimeInstaller
         ///
         /// This value is also displayed on the Microsoft download page along with the download link
         /// </summary>
-        internal static string DownloadExeSha512 { get; } = "91bec94f32609fd194ac47a893cea1466e6ad25a16bbaf39cd6989fa9f09e865ba87669aabfe26cd3c8f2a57296170cc021dc762e238a6c5cb5e843d3df3169f";
+        internal static string Downloadx64ExeSha512 { get; } = "c277fe5434b66c05f7782d40b90ab04dd2a9ac3d1570b2ab96a2311a58aeefff27761ca4488aadebe3b897e961b24b2f9c5a597ee27c2c4387d3cf0833f6cc48";
+
+        internal static string DownloadArm64ExeSha512 { get; } = "6209799b87d2f7d3b17656e3229420dc2870217f8efc0f9000dba85f1811e95a4098ffd1601e78041b17fb181a3f58a89b5ca9da8bbb02f736e1d8c023e6cb9f";
 
         /// <summary>
         /// Url to the latest Desktop Runtime Download Page.
         /// </summary>
-        internal static string ManualDownloadPage { get; } = "https://dotnet.microsoft.com/download/dotnet/8.0/runtime?cid=getdotnetcore&runtime=desktop&os=windows&arch=x64";
+        internal static string ManualDownloadPage { get; } = "https://dotnet.microsoft.com/download/dotnet/9.0/runtime?cid=getdotnetcore&runtime=desktop&os=windows&arch={0}";
     }
 
 
@@ -67,7 +79,7 @@ namespace DotnetRuntimeInstaller
     /// if it is not already installed.
     ///
     /// * Checks if the Minimum Runtime version is installed by  checking RT install folder
-    /// * If not installed prompts to download and install
+    /// * If not installed prompts to download and install.
     /// * Downloads the installer to the Downloads folder
     /// * Prompts to install the runtime
     /// * Runs the runtime installer as admin
@@ -76,6 +88,7 @@ namespace DotnetRuntimeInstaller
     /// </summary>
     internal class DesktopRuntimeInstaller
     {
+
 
         /// <summary>
         /// Checks runtime version, downloads and installs runtime if not installed.
@@ -114,7 +127,7 @@ namespace DotnetRuntimeInstaller
 
                 if (key.Key == ConsoleKey.M)
                 {
-                    ShellUtils.GoUrl(DesktopRuntimeConfiguration.ManualDownloadPage);
+                    ShellUtils.GoUrl(DesktopRuntimeConfiguration.ManualDownloadPage + (IsArm64 ? "arm64" : "x64"));
                     return true;
                 }
                 if (key.Key == ConsoleKey.Y || key.Key == ConsoleKey.Enter)
@@ -123,12 +136,17 @@ namespace DotnetRuntimeInstaller
                 }
             }
 
+
             return result;
         }
 
+
         private static bool DownloadAndInstall(bool isSilent = false)
         {
-            var url = DesktopRuntimeConfiguration.RuntimeDownloadUrl;
+            var url = DesktopRuntimeConfiguration.DesktopRuntimeDownloadUrlX64;
+            if (IsArm64)
+                url = DesktopRuntimeConfiguration.DesktopRuntimeDownloadUrlArm64;
+
             var filename = Path.GetFileName(url);
 
             string pattern = @"(\d+\.\d+\.\d+)";
@@ -150,7 +168,7 @@ to:
             Console.WriteLine("Please wait while we download...");
             try
             {
-                var client = new WebClient();
+                var client = new WebClient();              
                 client.DownloadFile(url, dlPath);
             }
             catch (Exception ex)
@@ -161,18 +179,32 @@ to:
 
             ConsoleWrite("Download complete.", ConsoleColor.DarkYellow);
 
-            if (!string.IsNullOrEmpty(DesktopRuntimeConfiguration.DownloadExeSha512) &&
-                !CheckFileSha512(dlPath, DesktopRuntimeConfiguration.DownloadExeSha512))
+            // Validate Sha512 hash
+            if (!IsArm64)
             {
-                ConsoleWrite($"File Integrity check based on SHA512 Hash failed.\nexpected: {DesktopRuntimeConfiguration.DownloadExeSha512}\n  actual: {ComputedFileHash}", ConsoleColor.Red);
-                return false;
+                if (!string.IsNullOrEmpty(DesktopRuntimeConfiguration.Downloadx64ExeSha512) &&
+                    !CheckFileSha512(dlPath, DesktopRuntimeConfiguration.Downloadx64ExeSha512))
+                {
+                    ConsoleWrite($"File Integrity check based on SHA512 Hash failed.\nexpected: {DesktopRuntimeConfiguration.Downloadx64ExeSha512}\n  actual: {ComputedFileHash}", ConsoleColor.Red);
+                    return false;
+                }
+                ConsoleWrite("File integrity SHA512 hash matches.", ConsoleColor.DarkYellow);
             }
-            ConsoleWrite("File integrity SHA512 hash matches.", ConsoleColor.DarkYellow);
+            else
+            {
+                if (!string.IsNullOrEmpty(DesktopRuntimeConfiguration.DownloadArm64ExeSha512) &&
+                    !CheckFileSha512(dlPath, DesktopRuntimeConfiguration.DownloadArm64ExeSha512))
+                {
+                    ConsoleWrite($"File Integrity check based on SHA512 Hash failed.\nexpected: {DesktopRuntimeConfiguration.Downloadx64ExeSha512}\n  actual: {ComputedFileHash}", ConsoleColor.Red);
+                    return false;
+                }
+                ConsoleWrite("File integrity SHA512 hash matches.", ConsoleColor.DarkYellow);
+            }
 
             if (!isSilent)
             {
                 ConsoleWrite(
-                    "\nWould you like to install the runtime now? [Y]/[n] (Yes installs, no opens in Explorer)",
+                    "\nWould you like to install the runtime now? [Y]/[n] (Yes installs, No opens in Explorer)",
                     ConsoleColor.Yellow);
 
                 var key = Console.ReadKey();
@@ -241,6 +273,9 @@ to:
                     try
                     {
                         var dirName = Path.GetFileName(d);
+                        if (DesktopRuntimeConfiguration.AllowPreviewVersions && dirName.Contains("-"))
+                            dirName = dirName.Substring(0, dirName.IndexOf('-'));  // strip preview info
+
                         var res = dirName.StartsWith(DesktopRuntimeConfiguration.MinDotnetRuntimeVersion.Substring(0, 2)) &&
                                   new Version(dirName) >= new Version(DesktopRuntimeConfiguration.MinDotnetRuntimeVersion);
                         return res;
@@ -271,6 +306,35 @@ to:
                 }
             }
         }
+
+
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool IsWow64Process2(IntPtr hProcess, out ushort processMachine, out ushort nativeMachine);
+        const ushort IMAGE_FILE_MACHINE_ARM64 = 0xAA64;
+
+        internal static bool IsArm64
+        {
+            get
+            {
+                if (IsWow64Process2(Process.GetCurrentProcess().Handle,
+                        out ushort procArch,
+                        out ushort osArch))
+                {
+                    if (osArch == IMAGE_FILE_MACHINE_ARM64)
+                        return true;
+                }
+                return false;
+
+                // this doesn't return the correct result in net472
+                //return RuntimeInformation.OSArchitecture == Architecture.Arm64;
+            }
+        }
+       
+
     }
+
+
+
 
 }

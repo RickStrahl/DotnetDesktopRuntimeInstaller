@@ -1,4 +1,4 @@
-# Dotnet 8.0 Desktop and Windows Hosting Runtime Checker and Installer
+# Dotnet 9.0 Desktop and Windows Hosting Runtime Checker and Installer
 
 This project creates a tiny Windows Console executable that can be shipped with a .NET Core application **to ensure that a minimum version of the Desktop or Windows Hosting Bundle Runtime is installed**. 
 
@@ -64,13 +64,13 @@ In order for this tool to work **you have to specify a few things** that determi
 
 
 * An application name (for prompts)
-* A minimum version you need to have supported (ie. 7.0.3)
+* A minimum version you need to have supported (ie. 9.0.4)
 * A direct download URL (from MS site)  
-<small><i>([from here](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) - choose x64 Desktop Runtime and follow to the download link)</i></small>
+<small><i>([from here](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) - choose x64 Desktop Runtime and follow to the download link)</i></small>
 * An optional SHA512 has of the file content
 * An optional Download URL for manual user downloading
 
-You can configure these values in `DesktopRuntimeInstaller.cs` in the `RuntimeConfiguration` class:
+You can configure these values in `DesktopRuntimeInstaller.cs` in the `DesktopRuntimeConfiguration` class:
 
 ```csharp
 internal class RuntimeConfiguration
@@ -83,7 +83,7 @@ internal class RuntimeConfiguration
     /// Launcher checks for installed version and if lower prompts
     /// to install it.
     /// </summary>
-    internal static string MinDotnetRuntimeVersion { get; } = "7.0.3";
+    internal static string MinDotnetRuntimeVersion { get; } = "9.0.0";
 
     /// <summary>
     /// Direct download URL for the .NET Desktop Runtime Installer.
@@ -117,19 +117,24 @@ internal class RuntimeConfiguration
 }
 ```
 
-I'd recommended that you check for the **lowest viable runtime version** that your application can run with, but **always download and install the latest patch version** specified in the download Url. So for example, my application works with 7.0.3, but I install the latest which is 7.0.7. 
+I'd recommended that you check for the **lowest viable runtime version** that your application can run with, but **always download and install the latest patch version** specified in the download Url. So for example, my application works with 9.0.0, but I install the latest which is 9.0.4. 
 
-This is preferable over checking for the latest version, as a valid runtime may already be installed rather than downloading the very latest. This helps reduce piling up every singe runtime installations on the user's machine as well. Windows 11 has also started to update .NET Core to newer patch versions, if they are already installed.
+This is preferable over always checking for the latest version, as a valid runtime may already be installed rather than downloading the very latest. This helps reduce piling up every singe runtime installations on the user's machine as well. Windows 11 has also started to update .NET Core to newer patch versions, if they are already installed.
 
 You can find the latest 7.0 version download URL at this dynamic link:
 
-[Latest .NET 7.0 Desktop Runtime Download](https://dotnet.microsoft.com/download/dotnet/7.0/runtime?cid=getdotnetcore&runtime=desktop&os=windows&arch=x64)
+[Latest .NET 9.0 Desktop Runtime Download](https://dotnet.microsoft.com/download/dotnet/9.0/runtime?cid=getdotnetcore&runtime=desktop&os=windows&arch=x64)
 
 On this page you find:
 
 * A direct download link
 * The SHA512 hash
 
+
+## Windows Hosting Bundle Runtime Installation
+There's also similar support for the Windows Hosting Bundle Runtime installation using the `WindowsHostingBundleInstaller`. It works the same ways as the DesktopRuntimeInstaller with a different class name. 
+
+This is a less likely use case as server installations to deployed applications tend to be less common, but it's come up on a few occasions for me when creating turnkey Web installers for clients. It gives the option of installing the hosting bundle as a utility process even if no installer is used to launch it from automatically.
 
 ## Resources
 
