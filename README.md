@@ -73,7 +73,7 @@ In order for this tool to work **you have to specify a few things** that determi
 You can configure these values in `DesktopRuntimeInstaller.cs` in the `DesktopRuntimeConfiguration` class:
 
 ```csharp
-internal class RuntimeConfiguration
+internal class DesktopRuntimeConfiguration
 {
     internal static string ApplicationName = "Markdown Monster";
 
