@@ -2,10 +2,10 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<Version>0.3</Version>
+		<Version>0.4</Version>
 		<TargetFramework>net472</TargetFramework>		
 		<Title>Dotnet Runtime Installer</Title>
-		<Copyright>West Wind Technologies, 2023-2024</Copyright>
+		<Copyright>West Wind Technologies, 2023-2025</Copyright>
 		<Summary>A tiny Windows Executable that can install the .NET Runtime for Desktop or the Windows Hosting bundle by checking for existing version and downloading and optionally installing a minimum version if not already present.</Summary>
 	</PropertyGroup>
 </Project>

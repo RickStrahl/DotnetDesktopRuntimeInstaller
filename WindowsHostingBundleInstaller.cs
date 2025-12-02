@@ -30,7 +30,7 @@ namespace DotnetRuntimeInstaller
         /// Launcher checks for installed version and if lower prompts
         /// to install it.
         /// </summary>
-        internal static string MinDotnetRuntimeVersion { get; } = "9.0.0";
+        internal static string MinDotnetRuntimeVersion => "10.0.0";
 
         /// <summary>
         /// Direct download URL for the .NET Hosting Bundle Runtime Installer.
@@ -41,10 +41,10 @@ namespace DotnetRuntimeInstaller
         /// a compatible version is already installed.
         /// 
         /// Get this URL from the Microsoft .NET download site:
-        /// https://dotnet.microsoft.com/en-us/download/dotnet/9.0 (Download x64 Desktop Runtime)
+        /// https://dotnet.microsoft.com/en-us/download/dotnet/10.0 (Download x64 Desktop Runtime)
         /// </summary>
-        internal static string RuntimeDownloadUrl { get; } =
-            "https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.4/dotnet-hosting-9.0.4-win.exe";
+        internal static string RuntimeDownloadUrl => 
+            "https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.0/dotnet-hosting-10.0.0-win.exe";
 
         /// <summary>
         /// Optional SHA512 hash of the downloaded file to verify the file integrity.
@@ -53,12 +53,12 @@ namespace DotnetRuntimeInstaller
         ///
         /// This value is also displayed on the Microsoft download page along with the download link
         /// </summary>
-        internal static string DownloadExeSha512 { get; } = "e02d6e48361bc09f84aefef0653bd1eaa1324795d120758115818d77f1ba0bca751dcc7e7c143293c7831fd72ff566d7c2248d1cb795f8d251c04631bc4459ea";
+        internal static string DownloadExeSha512 { get; } = "47e0c900d3a7da4aed8d6e5c37d8c54513fa9d6b3b269827acbe4bbc9c8f0ff107761f06a09f9fe2f69f16cdda98ab998251d29e1e605fc0982bb557e27a6728";
 
         /// <summary>
         /// Url to the latest ASP.NET Hosting Bundle Download Page.
         /// </summary>
-        internal static string ManualDownloadPage { get; } = "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-9.0.4-windows-hosting-bundle-installer";        
+        internal static string ManualDownloadPage { get; } = "https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.0/dotnet-hosting-10.0.0-win.exe";        
     }
 
 

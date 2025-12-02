@@ -28,14 +28,14 @@ namespace DotnetRuntimeInstaller
         /// Launcher checks for installed version and if lower prompts
         /// to install it.
         /// </summary>
-        internal static string MinDotnetRuntimeVersion { get; } = "9.0.0";
+        internal static string MinDotnetRuntimeVersion => "10.0.0";
 
         /// <summary>
         /// Determines on whether preview versions are allowed to be used
         /// as pre-installed versions. If false preview releases are not
         /// allowed and a release version must be installed or downloaded.
         /// </summary>
-        internal static bool AllowPreviewVersions { get; } = false;
+        internal static bool AllowPreviewVersions => false;
 
         /// <summary>
         /// Direct download URL for the .NET Desktop Runtime Installer.
@@ -49,11 +49,7 @@ namespace DotnetRuntimeInstaller
         /// https://dotnet.microsoft.com/en-us/download/dotnet/9.0 (Download x64 or Arm64 Desktop Runtime)
         /// </summary>
         internal static string DesktopRuntimeDownloadUrlX64 { get; } =
-          "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/9.0.4/windowsdesktop-runtime-9.0.4-win-x64.exe";
-
-
-        internal static string DesktopRuntimeDownloadUrlArm64 { get; } =
-            "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/9.0.4/windowsdesktop-runtime-9.0.4-win-arm64.exe";
+          "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.0/windowsdesktop-runtime-10.0.0-win-x64.exe";
 
         /// <summary>
         /// Optional SHA512 hash of the downloaded file to verify the file integrity.
@@ -62,14 +58,19 @@ namespace DotnetRuntimeInstaller
         ///
         /// This value is also displayed on the Microsoft download page along with the download link
         /// </summary>
-        internal static string Downloadx64ExeSha512 { get; } = "c277fe5434b66c05f7782d40b90ab04dd2a9ac3d1570b2ab96a2311a58aeefff27761ca4488aadebe3b897e961b24b2f9c5a597ee27c2c4387d3cf0833f6cc48";
+        internal static string Downloadx64ExeSha512 { get; } = "5c6dd5616f8365cc618087916bf9e0470f5fe61242010df040ce7a688acc0598797bce0a62d3915d8951dc70f89deb1e30223c1dc0918f05af92c88658f4b3ec";
 
-        internal static string DownloadArm64ExeSha512 { get; } = "6209799b87d2f7d3b17656e3229420dc2870217f8efc0f9000dba85f1811e95a4098ffd1601e78041b17fb181a3f58a89b5ca9da8bbb02f736e1d8c023e6cb9f";
+
+        internal static string DesktopRuntimeDownloadUrlArm64 { get; } =
+            "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.0/windowsdesktop-runtime-10.0.0-win-arm64.exe";
+
+       
+        internal static string DownloadArm64ExeSha512 { get; } = "6c8b3c89a43aed39cbb19968b6a9727c2cc5d15cca1b68c8486cb355df76fcaaa1209a0ad06cb431b226bc561f06e521098934c96cea7d11d6322a6a48fcc422";
 
         /// <summary>
         /// Url to the latest Desktop Runtime Download Page.
         /// </summary>
-        internal static string ManualDownloadPage { get; } = "https://dotnet.microsoft.com/download/dotnet/9.0/runtime?cid=getdotnetcore&runtime=desktop&os=windows&arch={0}";
+        internal static string ManualDownloadPage { get; } = "https://dotnet.microsoft.com/download/dotnet/10.0/runtime?cid=getdotnetcore&runtime=desktop&os=windows&arch={0}";
     }
 
 
